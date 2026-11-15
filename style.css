@@ -1,0 +1,70 @@
+/* Colour variables: change them here to re-theme the whole site */
+/* Professional theme: deep navy, restrained blue accents, and high-contrast surfaces. */
+:root{--ink:#172338;--mute:#5e6c80;--bg:#edf2f8;--card:#fff;--line:#d5deea;--accent:#2457a6;
+--high:#b3261e;--medium:#9a5b00;--low:#1f5fa8;--none:#237a3b}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#edf2f8 0%,#f7f9fc 52%,#e7eef8 100%);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,sans-serif;min-height:100vh}
+/* Hero banner gives the app a polished security-dashboard identity. */
+.top{background:linear-gradient(120deg,#10213d 0%,#173c70 58%,#2457a6 100%);color:#fff;padding:34px max(20px,calc((100% - 960px)/2));border-bottom:4px solid #78a9f5;box-shadow:0 8px 24px rgba(16,33,61,.18)}
+.top h1{margin:0 0 6px;font:750 2.15rem/1.2 "Segoe UI",system-ui,sans-serif;letter-spacing:-.035em}
+.top p{margin:0;max-width:60ch;opacity:.92}
+main{max-width:960px;margin:0 auto;padding:28px 20px}
+/* Tabs and panels */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{background:#e2eaf5;color:#30435e;border:1px solid #d0dbea;border-radius:8px;padding:10px 16px;font:inherit;cursor:pointer}
+.tabs button[aria-selected=true]{background:#fff;border-color:#9db9e2;font-weight:700;color:var(--accent);box-shadow:0 2px 7px rgba(36,87,166,.10)}
+.panel{background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:22px;box-shadow:0 5px 18px rgba(23,35,56,.055)}
+.panel[hidden]{display:none}
+label{display:block;font-weight:600;margin:0 0 6px}
+label.inline{display:inline-block;font-weight:400;margin-right:14px}
+textarea{width:100%;padding:12px;border:1px solid #b8c6d8;border-radius:8px;background:#fbfcfe;color:var(--ink);font:14px/1.5 Consolas,monospace;resize:vertical}textarea:focus,input:focus{border-color:#5686cf;outline:2px solid rgba(86,134,207,.16)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+button{font:inherit;cursor:pointer;border-radius:4px;padding:9px 16px}
+.primary{background:linear-gradient(135deg,#2457a6,#173f7a);color:#fff;border:1px solid #2457a6;box-shadow:0 2px 5px rgba(36,87,166,.16)}
+.primary:hover{background:#0b4448}
+.ghost{background:#fff;color:var(--accent);border:1px solid #9bb4d8}
+.ghost:hover{background:#e6f1f2}
+/* Small pill buttons for the examples */
+.chip{background:#e6f1f2;color:var(--accent);border:1px solid #9cc3c7;border-radius:999px;padding:4px 12px;font-size:.875rem}
+.chip:hover{background:#d3e8ea}
+/* Visible keyboard focus outline for accessibility */
+:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+.hint{color:var(--mute);font-size:.875rem}
+h2{font-size:1.1rem;margin:0 0 8px}
+/* Summary banner shown above the scan results */
+.verdict{display:flex;gap:20px;align-items:center;border:1px solid var(--line);padding:14px;margin-top:8px}
+.verdict p{margin:0}
+/* Finding boxes: the left border colour shows the severity */
+.finding{border:1px solid var(--line);border-left:6px solid var(--mute);padding:12px 14px;margin-top:12px}
+.finding.high{border-left-color:var(--high)}.finding.medium{border-left-color:var(--medium)}
+.finding.low{border-left-color:var(--low)}.finding.none{border-left-color:var(--none)}
+.finding h3{margin:0 0 4px;font-size:1rem}
+.finding p{margin:4px 0}
+.badge{font-weight:700}
+.badge.high{color:var(--high)}.badge.medium{color:var(--medium)}.badge.low{color:var(--low)}.badge.none{color:var(--none)}
+code,.ev{font:13px Consolas,monospace;background:#f1f4f6;padding:2px 5px;border-radius:3px;word-break:break-all}
+/* Assistant chat area */
+.chat{max-height:340px;overflow:auto;border:1px solid var(--line);padding:10px;margin:10px 0;background:#fafbfc}
+.msg{margin:6px 0;padding:8px 10px;border-radius:6px;max-width:92%;white-space:pre-wrap}
+.msg.me{background:#d9ecee;margin-left:auto}
+.msg.bot{background:#fff;border:1px solid var(--line)}
+.err{color:var(--high);font-weight:600}
+.ok{color:var(--none);font-weight:600}
+footer{text-align:center;color:var(--mute);padding:28px 20px;font-size:.9rem;border-top:1px solid var(--line);background:rgba(255,255,255,.55)}
+footer p{margin:2px 0}
+/* Only animate for people who have not asked for reduced motion */
+@media (prefers-reduced-motion:no-preference){.tabs button{transition:background .15s}}
+/* Small screens: stack the summary banner vertically */
+@media (max-width:520px){.verdict{flex-direction:column;align-items:flex-start}}
+
+/* Profile form and scan-history table */
+input{width:100%;padding:10px;border:1px solid #9aa9b5;border-radius:4px;font:inherit;margin:0 0 12px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:9px;border:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
+th{background:#eaf0f8;color:#243955;font-weight:700}
+.recommendations{border:1px solid #d3dfef;border-left:4px solid var(--accent);border-radius:8px;padding:16px;margin:14px 0;background:#f5f8fd}
+.recommendations ul{padding-left:22px}
+#profile-status{min-height:1.3em}
+/* Print-friendly reports: hide the controls. */
+@media print{body{background:#fff;color:#000}.top{background:#fff;color:#000;border-bottom:2px solid #333;box-shadow:none;padding:16px}.tabs,button,.feedback{display:none!important}.panel{border:0;border-radius:0;box-shadow:none;padding:8px}.table-wrap{overflow:visible}footer{background:#fff}}

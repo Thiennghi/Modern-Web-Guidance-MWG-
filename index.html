@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<!-- Strict CSP: no inline scripts/styles, no network requests, no plugins.
+     Note: frame-ancestors, X-Content-Type-Options and HSTS only work as real HTTP headers (see README notes in chat). -->
+<meta http-equiv="Content-Security-Policy"
+ content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<title>SecureScan – URL, message and code vulnerability scanner</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Page header: product name and privacy-first summary for the user. -->
+<header class="top">
+  <h1>AI Secure , scan and  Code Review</h1>
+  <p>Paste a URL, a suspicious message or a code snippet. Everything is analysed in your browser; nothing is uploaded.</p>
+</header>
+
+<main>
+  <!-- Profile is opened from the top navigation; it is hidden until selected. -->
+  <section class="panel" id="profile-panel" role="tabpanel" aria-labelledby="tab-profile" hidden>
+    <h2>Create Profile</h2>
+    <p class="hint">Optional profile for this browser only. Do not enter passwords, API keys, or other secrets.</p>
+    <form id="profile-form">
+      <label for="profile-name">Display name</label>
+      <input id="profile-name" name="profile-name" maxlength="60" autocomplete="nickname" placeholder="e.g., Security Student">
+      <label for="profile-role">Role / learning goal</label>
+      <input id="profile-role" name="profile-role" maxlength="100" placeholder="e.g., Undergraduate learning secure web development">
+      <div class="row"><button class="primary" type="submit">Save profile</button><button class="ghost" id="profile-clear" type="button">Clear profile</button></div>
+      <p id="profile-status" class="hint" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- Tab buttons: app1.js shows the panel whose id matches data-tab -->
+  <div class="tabs" role="tablist" aria-label="Tools">
+    <button role="tab" id="tab-profile" aria-selected="false" aria-controls="profile-panel" data-tab="profile">Create Profile</button>
+    <button role="tab" id="tab-scan" aria-selected="true" aria-controls="panel-scan" data-tab="scan">Vulnerability scan</button>
+    <button role="tab" id="tab-syntax" aria-selected="false" aria-controls="panel-syntax" data-tab="syntax">Syntax check</button>
+    <button role="tab" id="tab-ai" aria-selected="false" aria-controls="panel-ai" data-tab="ai">Assistant</button>
+  </div>
+
+  <!-- TAB 1: paste a URL, message or code and scan it -->
+  <section id="panel-scan" role="tabpanel" aria-labelledby="tab-scan" class="panel">
+    <label for="input-scan">URL, message or code to scan</label>
+    <textarea id="input-scan" rows="8" maxlength="20000" spellcheck="false" placeholder="https://example.com/login?user=me&#10;or paste an email, SMS or JavaScript"></textarea>
+    <div class="row">
+      <button id="btn-scan" class="primary">Scan</button>
+      <button id="btn-clear-scan" class="ghost">Clear</button>
+      <span class="hint">Max 20,000 characters</span>
+    </div>
+    <div id="out-scan" aria-live="polite"></div>
+  </section>
+    <!-- History table is populated safely by app1.js using DOM text nodes. -->
+    <section class="panel" id="history-panel">
+      <h2>Scan history</h2>
+      <p class="hint">Recent scans are saved in this browser only. Input previews are shortened. Clear history when using a shared device.</p>
+      <div class="row"><button id="btn-clear-history" class="ghost" type="button">Clear history</button></div>
+      <div class="table-wrap">
+        <table id="history-table">
+          <thead><tr><th>Date / time</th><th>Type</th><th>Input preview</th><th>Findings</th><th>Highest risk</th></tr></thead>
+          <tbody id="history-body"><tr><td colspan="5">No scans yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+  <!-- TAB 2: JavaScript syntax checker -->
+  <section id="panel-syntax" role="tabpanel" aria-labelledby="tab-syntax" class="panel" hidden>
+    <label for="input-syntax">JavaScript to check</label>
+    <textarea id="input-syntax" rows="8" maxlength="20000" spellcheck="false" placeholder="Paste JavaScript to check brackets, strings and common mistakes"></textarea>
+    <div class="row">
+      <button id="btn-syntax" class="primary">Check code</button>
+      <span class="hint">Heuristic checker: it can miss errors or flag regex literals.</span>
+    </div>
+    <div id="out-syntax" aria-live="polite"></div>
+  </section>
+
+  <!-- TAB 3: local assistant (chat log, quick buttons, question box) -->
+  <section id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" class="panel" hidden>
+    <p class="hint">A local, rule-based helper. It explains your last scan and answers common web-security questions. It does not call any external AI service.</p>
+    <div id="chat" class="chat" aria-live="polite"></div>
+    <!-- Defensive guidance only: this local assistant does not execute attacks. -->
+    <section class="recommendations"><h2>Recommendations to reduce adversary attacks</h2><ul><li>Use parameterized database queries and validate input on the server.</li><li>Prevent XSS with textContent, contextual output encoding, safe HTML sanitization, and a strict Content Security Policy.</li><li>Use HTTPS, secure session cookies (HttpOnly, Secure, SameSite), CSRF protection, and multi-factor authentication.</li><li>Keep dependencies and frameworks patched; remove exposed secrets and rotate leaked credentials.</li><li>Apply least privilege, rate limits, logging/monitoring, backups, and tested incident-response procedures.</li><li>Test only systems you own or have explicit permission to assess.</li></ul><p class="hint">These are general defensive practices, not a guarantee against every attack.</p></section>
+    <div class="row">
+      <button class="ghost quick" data-q="explain my last scan">Explain my last scan</button>
+      <button class="ghost quick" data-q="how do I fix xss">Fix XSS</button>
+      <button class="ghost quick" data-q="how to spot phishing">Spot phishing</button>
+    </div>
+    <label for="input-ai">Ask a question</label>
+    <textarea id="input-ai" rows="2" maxlength="500"></textarea>
+    <div class="row"><button id="btn-ai" class="primary">Ask</button></div>
+  </section>
+
+  <!-- Sample tests: the button runs the self-check code at the bottom of app1.js -->
+  <section class="panel" id="test-panel">
+    <h2>Sample tests</h2>
+    <p class="hint">Runs small built-in checks against the scanner to confirm the rules still work.</p>
+    <div class="row"><button id="btn-test" class="ghost" type="button">Run sample tests</button></div>
+    <div id="out-test" aria-live="polite"></div>
+  </section>
+
+  <!-- Feedback form: stays in the browser, nothing is sent -->
+  <!-- Feedback/comment area is local-only and is not transmitted or persisted. -->
+  <section class="panel feedback">
+    <h2>Was this helpful?</h2>
+    <label class="inline"><input type="radio" name="feedback" value="yes"> Yes</label>
+    <label class="inline"><input type="radio" name="feedback" value="no"> No</label>
+    <label for="comment">Comments</label>
+    <textarea id="comment" rows="3" maxlength="500"></textarea>
+    <div class="row"><button id="btn-feedback" class="ghost">Send feedback</button></div>
+    <div id="out-feedback" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Educational project &copy; 2026. Created by Bryan  Duong.</p>
+  <p>Results are automated hints, not a guarantee that something is safe.</p>
+</footer>
+
+<!-- Load order matters: scanner1.js first (also adds the "Try an example" buttons), then app1.js, which uses it -->
+<script src="scanner1.js"></script>
+<script src="app1.js"></script>
+</body>
+</html>
